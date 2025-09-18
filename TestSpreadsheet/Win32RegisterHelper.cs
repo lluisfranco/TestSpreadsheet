@@ -59,7 +59,7 @@ namespace TestSpreadsheet
         {
             using RegistryKey? key = Registry.CurrentUser.OpenSubKey($@"Software\{app}");
             if (key != null)
-                return (string[])key.GetValue("MyListMulti", Array.Empty<string>());
+                return (string[])key.GetValue(listname, Array.Empty<string>());
             return default;
         }
     }
