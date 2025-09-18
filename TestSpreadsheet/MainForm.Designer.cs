@@ -4892,7 +4892,6 @@
             Name = "MainForm";
             Ribbon = ribbon;
             StatusBar = ribbonStatusBar;
-            Text = "Falcon Calc";
             ((System.ComponentModel.ISupportInitialize)repositoryItemProgressBar1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ribbon).EndInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemFontEdit1).EndInit();

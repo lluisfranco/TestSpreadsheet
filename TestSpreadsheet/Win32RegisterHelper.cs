@@ -49,7 +49,19 @@ namespace TestSpreadsheet
                 uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
         }
 
-        public static void SaveToListRegistry(string app, string listname, string[] values)
+        public static void SaveValueToRegistry(string app, string keyname, string value)
+        {
+            using RegistryKey key = Registry.CurrentUser.CreateSubKey($@"Software\{app}");
+            key?.SetValue(keyname, value, RegistryValueKind.String);
+        }
+
+        public static string? ReadValueFromRegistry(string app, string keyname)
+        {
+            using RegistryKey? key = Registry.CurrentUser.OpenSubKey($@"Software\{app}");
+            return key?.GetValue(keyname) as string;
+        }
+
+        public static void SaveListToRegistry(string app, string listname, string[] values)
         {
             using RegistryKey key = Registry.CurrentUser.CreateSubKey($@"Software\{app}");
             key?.SetValue(listname, values, RegistryValueKind.MultiString);

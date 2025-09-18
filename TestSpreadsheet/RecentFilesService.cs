@@ -24,7 +24,7 @@
 
         public void SaveRecentFiles()
         {
-            Win32RegisterHelper.SaveToListRegistry(AppName, RECENT_FILES_KEY, [.. RecentFiles]);
+            Win32RegisterHelper.SaveListToRegistry(AppName, RECENT_FILES_KEY, [.. RecentFiles]);
         }
     }
 }

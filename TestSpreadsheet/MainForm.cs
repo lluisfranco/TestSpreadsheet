@@ -17,6 +17,7 @@ namespace TestSpreadsheet
             ribbon.Toolbar.ItemLinks.Add(spreadsheetCommandBarButtonItem6);
             recentFilesService.LoadRecentFiles();
 
+            Load += (s, e) => ThemeHelper.RestoreSavedTheme(APP_TITLE);
             Shown += (s, e) =>
             {
                 if (!RegisterService.CheckIfExcelIsInstalled())
@@ -30,6 +31,7 @@ namespace TestSpreadsheet
                     RegisterService.RegisterExcelAssociationToApp();
                 }
             };
+            FormClosed += (s, e) => ThemeHelper.SaveCurrentTheme(APP_TITLE);
             spreadsheetControl.DocumentLoaded += (s, e) =>
             {
                 spreadsheetControl.Document.CalculateFull();
