@@ -1,11 +1,10 @@
-﻿using DevExpress.Dialogs.Core.View;
+﻿using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using System.IO;
-using System.Reflection;
 
 namespace TestSpreadsheet
 {
-    public partial class MainForm : DevExpress.XtraBars.Ribbon.RibbonForm
+    public partial class MainForm : RibbonForm
     {
         const string APP_TITLE = "Falcon Matrix";
         private readonly RecentFilesService recentFilesService = new(APP_TITLE);
@@ -14,10 +13,8 @@ namespace TestSpreadsheet
             InitializeComponent();
             Text = APP_TITLE;
             barStaticItemVersion.Caption = $"{Application.ProductVersion}";
-            MinimumSize = new Size(800, 550);
+            MinimumSize = new Size(800, 600);
             this.AddFormBoundsRegistryStorage();
-            Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-
             ribbon.SelectedPage = homeRibbonPage1;
             ribbon.Toolbar.ItemLinks.Add(spreadsheetCommandBarButtonItem2);
             ribbon.Toolbar.ItemLinks.Add(spreadsheetCommandBarButtonItem3);
