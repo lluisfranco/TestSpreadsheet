@@ -29,10 +29,13 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DevExpress.XtraGrid.GridFormatRule gridFormatRule2 = new DevExpress.XtraGrid.GridFormatRule();
-            DevExpress.XtraEditors.FormatConditionRuleValue formatConditionRuleValue2 = new DevExpress.XtraEditors.FormatConditionRuleValue();
+            DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
+            DevExpress.XtraEditors.FormatConditionRuleValue formatConditionRuleValue1 = new DevExpress.XtraEditors.FormatConditionRuleValue();
             colExists = new DevExpress.XtraGrid.Columns.GridColumn();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            simpleButtonRegisterExtensions = new DevExpress.XtraEditors.SimpleButton();
+            labelControlAssociatedApp = new DevExpress.XtraEditors.LabelControl();
+            labelControl1 = new DevExpress.XtraEditors.LabelControl();
             gridControl = new DevExpress.XtraGrid.GridControl();
             recentFileBindingSource = new BindingSource(components);
             gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -45,6 +48,10 @@
             emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
             layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
@@ -54,6 +61,10 @@
             ((System.ComponentModel.ISupportInitialize)emptySpaceItem1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)emptySpaceItem2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)emptySpaceItem3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem4).BeginInit();
             SuspendLayout();
             // 
             // colExists
@@ -68,6 +79,9 @@
             // layoutControl1
             // 
             layoutControl1.AllowCustomization = false;
+            layoutControl1.Controls.Add(simpleButtonRegisterExtensions);
+            layoutControl1.Controls.Add(labelControlAssociatedApp);
+            layoutControl1.Controls.Add(labelControl1);
             layoutControl1.Controls.Add(gridControl);
             layoutControl1.Dock = DockStyle.Fill;
             layoutControl1.Location = new Point(0, 0);
@@ -77,13 +91,49 @@
             layoutControl1.TabIndex = 0;
             layoutControl1.Text = "layoutControl1";
             // 
+            // simpleButtonRegisterExtensions
+            // 
+            simpleButtonRegisterExtensions.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
+            simpleButtonRegisterExtensions.ImageOptions.ImageToTextIndent = 10;
+            simpleButtonRegisterExtensions.Location = new Point(20, 127);
+            simpleButtonRegisterExtensions.Name = "simpleButtonRegisterExtensions";
+            simpleButtonRegisterExtensions.Padding = new Padding(8);
+            simpleButtonRegisterExtensions.Size = new Size(172, 47);
+            simpleButtonRegisterExtensions.StyleController = layoutControl1;
+            simpleButtonRegisterExtensions.TabIndex = 6;
+            simpleButtonRegisterExtensions.Text = "Associate XLS and XLSX \r\nextensions with Falcon Matrix";
+            // 
+            // labelControlAssociatedApp
+            // 
+            labelControlAssociatedApp.Appearance.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
+            labelControlAssociatedApp.Appearance.Options.UseFont = true;
+            labelControlAssociatedApp.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            labelControlAssociatedApp.Location = new Point(12, 82);
+            labelControlAssociatedApp.Name = "labelControlAssociatedApp";
+            labelControlAssociatedApp.Padding = new Padding(10);
+            labelControlAssociatedApp.Size = new Size(188, 33);
+            labelControlAssociatedApp.StyleController = layoutControl1;
+            labelControlAssociatedApp.TabIndex = 5;
+            labelControlAssociatedApp.Text = "-";
+            // 
+            // labelControl1
+            // 
+            labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            labelControl1.Location = new Point(12, 45);
+            labelControl1.Name = "labelControl1";
+            labelControl1.Padding = new Padding(10);
+            labelControl1.Size = new Size(188, 33);
+            labelControl1.StyleController = layoutControl1;
+            labelControl1.TabIndex = 4;
+            labelControl1.Text = "Excel files are associated to";
+            // 
             // gridControl
             // 
             gridControl.DataSource = recentFileBindingSource;
-            gridControl.Location = new Point(178, 47);
+            gridControl.Location = new Point(204, 45);
             gridControl.MainView = gridView;
             gridControl.Name = "gridControl";
-            gridControl.Size = new Size(812, 564);
+            gridControl.Size = new Size(786, 566);
             gridControl.TabIndex = 0;
             gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
             // 
@@ -95,15 +145,15 @@
             // 
             gridView.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { colFilePath, colExists, colFileName, colLastModified, colFileSize, colImage });
             gridView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFullFocus;
-            gridFormatRule2.ApplyToRow = true;
-            gridFormatRule2.Column = colExists;
-            gridFormatRule2.Name = "FormatMarkFileNotExist";
-            formatConditionRuleValue2.Appearance.Font = new Font("Tahoma", 8.25F, FontStyle.Strikeout);
-            formatConditionRuleValue2.Appearance.Options.UseFont = true;
-            formatConditionRuleValue2.Condition = DevExpress.XtraEditors.FormatCondition.Equal;
-            formatConditionRuleValue2.Value1 = false;
-            gridFormatRule2.Rule = formatConditionRuleValue2;
-            gridView.FormatRules.Add(gridFormatRule2);
+            gridFormatRule1.ApplyToRow = true;
+            gridFormatRule1.Column = colExists;
+            gridFormatRule1.Name = "FormatMarkFileNotExist";
+            formatConditionRuleValue1.Appearance.Font = new Font("Tahoma", 8.25F, FontStyle.Strikeout);
+            formatConditionRuleValue1.Appearance.Options.UseFont = true;
+            formatConditionRuleValue1.Condition = DevExpress.XtraEditors.FormatCondition.Equal;
+            formatConditionRuleValue1.Value1 = false;
+            gridFormatRule1.Rule = formatConditionRuleValue1;
+            gridView.FormatRules.Add(gridFormatRule1);
             gridView.GridControl = gridControl;
             gridView.GroupCount = 1;
             gridView.Name = "gridView";
@@ -168,34 +218,69 @@
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { emptySpaceItem1, layoutControlItem1, emptySpaceItem2 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { emptySpaceItem1, layoutControlItem1, emptySpaceItem2, emptySpaceItem3, layoutControlItem2, layoutControlItem3, layoutControlItem4 });
             Root.Name = "Root";
             Root.Size = new Size(1002, 623);
             Root.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
+            emptySpaceItem1.AppearanceItemCaption.Font = new Font("Tahoma", 14F);
+            emptySpaceItem1.AppearanceItemCaption.Options.UseFont = true;
             emptySpaceItem1.Location = new Point(0, 0);
             emptySpaceItem1.Name = "emptySpaceItem1";
-            emptySpaceItem1.Size = new Size(166, 603);
+            emptySpaceItem1.Size = new Size(192, 33);
+            emptySpaceItem1.Text = "Excel Files";
+            emptySpaceItem1.TextVisible = true;
             // 
             // layoutControlItem1
             // 
             layoutControlItem1.Control = gridControl;
-            layoutControlItem1.Location = new Point(166, 35);
+            layoutControlItem1.Location = new Point(192, 33);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new Size(816, 568);
+            layoutControlItem1.Size = new Size(790, 570);
             layoutControlItem1.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             emptySpaceItem2.AppearanceItemCaption.Font = new Font("Tahoma", 14F);
             emptySpaceItem2.AppearanceItemCaption.Options.UseFont = true;
-            emptySpaceItem2.Location = new Point(166, 0);
+            emptySpaceItem2.Location = new Point(192, 0);
             emptySpaceItem2.Name = "emptySpaceItem2";
-            emptySpaceItem2.Size = new Size(816, 35);
+            emptySpaceItem2.Size = new Size(790, 33);
             emptySpaceItem2.Text = "Recent Files";
             emptySpaceItem2.TextVisible = true;
+            // 
+            // emptySpaceItem3
+            // 
+            emptySpaceItem3.Location = new Point(0, 174);
+            emptySpaceItem3.Name = "emptySpaceItem3";
+            emptySpaceItem3.Size = new Size(192, 429);
+            // 
+            // layoutControlItem2
+            // 
+            layoutControlItem2.Control = labelControl1;
+            layoutControlItem2.Location = new Point(0, 33);
+            layoutControlItem2.Name = "layoutControlItem2";
+            layoutControlItem2.Size = new Size(192, 37);
+            layoutControlItem2.TextVisible = false;
+            // 
+            // layoutControlItem3
+            // 
+            layoutControlItem3.Control = labelControlAssociatedApp;
+            layoutControlItem3.Location = new Point(0, 70);
+            layoutControlItem3.Name = "layoutControlItem3";
+            layoutControlItem3.Size = new Size(192, 37);
+            layoutControlItem3.TextVisible = false;
+            // 
+            // layoutControlItem4
+            // 
+            layoutControlItem4.Control = simpleButtonRegisterExtensions;
+            layoutControlItem4.Location = new Point(0, 107);
+            layoutControlItem4.Name = "layoutControlItem4";
+            layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 10, 10);
+            layoutControlItem4.Size = new Size(192, 67);
+            layoutControlItem4.TextVisible = false;
             // 
             // RecentFilesListUserControl
             // 
@@ -213,6 +298,10 @@
             ((System.ComponentModel.ISupportInitialize)emptySpaceItem1).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).EndInit();
             ((System.ComponentModel.ISupportInitialize)emptySpaceItem2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)emptySpaceItem3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem4).EndInit();
             ResumeLayout(false);
         }
 
@@ -232,5 +321,12 @@
         private DevExpress.XtraGrid.Columns.GridColumn colLastModified;
         private DevExpress.XtraGrid.Columns.GridColumn colFileSize;
         private DevExpress.XtraGrid.Columns.GridColumn colImage;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraEditors.LabelControl labelControlAssociatedApp;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraEditors.SimpleButton simpleButtonRegisterExtensions;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
     }
 }

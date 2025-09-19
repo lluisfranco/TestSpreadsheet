@@ -8,6 +8,7 @@ namespace TestSpreadsheet
     {
         const string APP_TITLE = "Falcon Matrix";
         private readonly RecentFilesService recentFilesService = new(APP_TITLE);
+        public string? OpenFileOnStart { get; set; }
         public MainForm()
         {
             InitializeComponent();
@@ -26,21 +27,13 @@ namespace TestSpreadsheet
             {
                 var recentFilesList = recentFilesService.RecentFiles.Select(f => new RecentFile(f)).ToList();
                 recentFilesUserControl.SetData(recentFilesList);
+                recentFilesUserControl.Initialize();
             };
             recentFilesUserControl.ItemDoubleClick += (s, e) =>
             {
                 var item = recentFilesUserControl.SelectedItem;
                 if (item == null || !item.Exists) return;
-                try
-                {
-                    var r = spreadsheetControl.LoadDocument(item.FilePath);
-                    ribbon.HideApplicationButtonContentControl();
-                }
-                catch (Exception ex)
-                {
-                    XtraMessageBox.Show($"Error loading file: {ex.Message}", 
-                        APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                LoadDocument(item.FilePath);
             };
             Load += (s, e) => ThemeHelper.RestoreSavedTheme(APP_TITLE);
             Shown += (s, e) =>
@@ -55,6 +48,7 @@ namespace TestSpreadsheet
                         APP_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
                     RegisterService.RegisterExcelAssociationToApp();
                 }
+                if (OpenFileOnStart is not null) LoadDocument(OpenFileOnStart);
             };
             FormClosed += (s, e) => ThemeHelper.SaveCurrentTheme(APP_TITLE);
             spreadsheetControl.DocumentLoaded += (s, e) =>
@@ -70,6 +64,20 @@ namespace TestSpreadsheet
                 recentFilesService.SaveRecentFileFile(spreadsheetControl.Document.Path);
                 ribbon.HideApplicationButtonContentControl();
             };
+        }
+
+        private void LoadDocument(string filepath)
+        {
+            try
+            {
+                var r = spreadsheetControl.LoadDocument(filepath);
+                ribbon.HideApplicationButtonContentControl();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Error loading file: {ex.Message}",
+                    APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
