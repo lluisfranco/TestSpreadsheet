@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using System.ComponentModel;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace TestSpreadsheet
@@ -21,32 +23,166 @@ namespace TestSpreadsheet
             return key.GetValue("") as string;
         }
 
+        //public static void RegisterFileAssociation(
+        //    string extension, string progId, string description, string applicationPath)
+        //{
+        //    using (var root = Registry.CurrentUser.CreateSubKey(@"Software\Classes"))
+        //    {
+        //        using (var extKey = root.CreateSubKey(extension))
+        //        {
+        //            extKey.SetValue("", progId);
+        //        }
+        //        using var progIdKey = root.CreateSubKey(progId);
+        //        progIdKey.SetValue("", description);
+        //        using (var iconKey = progIdKey.CreateSubKey("DefaultIcon"))
+        //        {
+        //            iconKey.SetValue("", $"\"{applicationPath}\",0");
+        //        }
+        //        using var shellKey = progIdKey.CreateSubKey(@"shell\open\command");
+        //        shellKey.SetValue("", $"\"{applicationPath}\" \"%1\"");
+        //    }
+        //    NativeMethods.SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
+        //}
+
+        //private static class NativeMethods
+        //{
+        //    [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        //    public static extern void SHChangeNotify(
+        //        uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        //}
+
         public static void RegisterFileAssociation(
-            string extension, string progId, string description, string applicationPath)
+    string extension, string progId, string description, string applicationPath)
         {
-            using (var root = Registry.CurrentUser.CreateSubKey(@"Software\Classes"))
+            // 1) Normalize inputs
+            if (string.IsNullOrWhiteSpace(extension)) throw new ArgumentNullException(nameof(extension));
+            if (!extension.StartsWith(".")) extension = "." + extension.Trim();
+            extension = extension.ToLowerInvariant();
+
+            if (string.IsNullOrWhiteSpace(progId)) throw new ArgumentNullException(nameof(progId));
+            if (string.IsNullOrWhiteSpace(applicationPath)) throw new ArgumentNullException(nameof(applicationPath));
+
+            applicationPath = Path.GetFullPath(applicationPath);
+            string exeName = Path.GetFileName(applicationPath);
+
+            using var root = Registry.CurrentUser.CreateSubKey(@"Software\Classes");
+
+            // 2) .ext -> ProgID
+            using (var extKey = root.CreateSubKey(extension))
             {
-                using (var extKey = root.CreateSubKey(extension))
-                {
-                    extKey.SetValue("", progId);
-                }
-                using var progIdKey = root.CreateSubKey(progId);
-                progIdKey.SetValue("", description);
-                using (var iconKey = progIdKey.CreateSubKey("DefaultIcon"))
-                {
-                    iconKey.SetValue("", $"\"{applicationPath}\",0");
-                }
-                using var shellKey = progIdKey.CreateSubKey(@"shell\open\command");
-                shellKey.SetValue("", $"\"{applicationPath}\" \"%1\"");
+                // Default value is the ProgID
+                extKey.SetValue("", progId, RegistryValueKind.String);
+
+                // Make the app appear in "Open with"
+                using var ow = extKey.CreateSubKey("OpenWithProgids");
+                // Empty value is fine; REG_SZ is OK for this purpose
+                ow.SetValue(progId, "", RegistryValueKind.String);
             }
-            NativeMethods.SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
+
+            // 3) ProgID definition
+            using (var progIdKey = root.CreateSubKey(progId))
+            {
+                progIdKey.SetValue("", description, RegistryValueKind.String);
+
+                using (var iconKey = progIdKey.CreateSubKey("DefaultIcon"))
+                    iconKey.SetValue("", $"\"{applicationPath}\",0", RegistryValueKind.String);
+
+                using var cmdKey = progIdKey.CreateSubKey(@"shell\open\command");
+                cmdKey.SetValue("", $"\"{applicationPath}\" \"%1\"", RegistryValueKind.String);
+
+                // Optional: friendly verb text
+                using var verbKey = progIdKey.CreateSubKey(@"shell\open");
+                verbKey.SetValue("FriendlyAppName", "FalconMatrix 2025", RegistryValueKind.String);
+            }
+
+            // 4) Applications\YourExe.exe (helps "Open with" UI)
+            using (var appCmd = root.CreateSubKey($@"Applications\{exeName}\shell\open\command"))
+                appCmd.SetValue("", $"\"{applicationPath}\" \"%1\"", RegistryValueKind.String);
+
+            // 5) Tell Explorer that associations changed
+            SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero); // SHCNE_ASSOCCHANGED
         }
 
-        private static class NativeMethods
+        public static void RemoveAllAssociations(string extension)
+            {
+                if (string.IsNullOrWhiteSpace(extension))
+                    throw new ArgumentException("Extension is required (e.g., \".txt\").");
+                if (!extension.StartsWith("."))
+                    extension = "." + extension;
+
+                // Delete per-user first
+                DeleteExtensionAndRelated(RegistryHive.CurrentUser, extension);
+
+                // Clear Explorer MRU / per-user choices
+                DeleteKeyTree(RegistryHive.CurrentUser,
+                    $@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\{extension}");
+                            
+                // Nudge the shell so changes take effect
+                BroadcastAssocChange();
+            }
+
+        private static void DeleteExtensionAndRelated(RegistryHive hive, string extension)
         {
-            [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern void SHChangeNotify(
-                uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+            // Read ProgID (default value of .ext), so we can remove it as well
+            string progId = null;
+            using (var baseKey = RegistryKey.OpenBaseKey(hive, RegistryView.Registry64))
+            using (var extKey = baseKey.OpenSubKey(@"Software\Classes\" + extension))
+            {
+                progId = extKey?.GetValue(null) as string;
+            }
+
+            // Delete .ext under both 64-bit and 32-bit views (just in case)
+            DeleteKeyTree(hive, $@"Software\Classes\{extension}", RegistryView.Registry64);
+            DeleteKeyTree(hive, $@"Software\Classes\{extension}", RegistryView.Registry32);
+
+            // Delete ProgID trees if we found one (they might not exist, that’s fine)
+            if (!string.IsNullOrWhiteSpace(progId))
+            {
+                DeleteKeyTree(hive, $@"Software\Classes\{progId}", RegistryView.Registry64);
+                DeleteKeyTree(hive, $@"Software\Classes\{progId}", RegistryView.Registry32);
+            }
+        }
+
+        private static void DeleteKeyTree(RegistryHive hive, string subKey, RegistryView view = RegistryView.Default)
+        {
+            try
+            {
+                using var baseKey = RegistryKey.OpenBaseKey(hive, view);
+                baseKey.DeleteSubKeyTree(subKey, throwOnMissingSubKey: false);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new InvalidOperationException(
+                    $"Access denied deleting '{hive}\\{subKey}' (try running as Administrator).", ex);
+            }
+            catch (Exception ex) when (ex is System.Security.SecurityException || ex is Win32Exception)
+            {
+                throw;
+            }
+        }
+
+        // ---- Shell notifications ----
+        private const int HWND_BROADCAST = 0xffff;
+        private const int WM_SETTINGCHANGE = 0x001A;
+        private const int SMTO_ABORTIFHUNG = 0x0002;
+
+        [Flags]
+        private enum Shcn : uint { AssocChanged = 0x08000000 }
+
+        [DllImport("shell32.dll")]
+        private static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern IntPtr SendMessageTimeout(
+            IntPtr hWnd, int Msg, IntPtr wParam, string lParam,
+            int fuFlags, int uTimeout, out IntPtr lpdwResult);
+
+        private static void BroadcastAssocChange()
+        {
+            // Let Explorer and apps know associations changed
+            SHChangeNotify((uint)Shcn.AssocChanged, 0, IntPtr.Zero, IntPtr.Zero);
+            SendMessageTimeout((IntPtr)HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero,
+                "Software\\Classes", SMTO_ABORTIFHUNG, 5000, out _);
         }
 
         public static int? GetIntValue(string keyname, string valueName, int? defaultvalue = null) =>

@@ -1,4 +1,7 @@
-﻿namespace TestSpreadsheet
+﻿using System.Diagnostics;
+using System.Reflection;
+
+namespace TestSpreadsheet
 {
     public class RegisterService
     {
@@ -10,12 +13,11 @@
 
         public static void RegisterExcelAssociationToApp()
         {
+            var exepath = Process.GetCurrentProcess().MainModule?.FileName ?? default!;
             Win32RegistryHelper.RegisterFileAssociation(
-                "xlsx", EXCEL_PROG_ID, EXCEL_DESCRIPTION, 
-                System.Reflection.Assembly.GetExecutingAssembly().Location);
+                "xlsx", EXCEL_PROG_ID, EXCEL_DESCRIPTION, exepath);
             Win32RegistryHelper.RegisterFileAssociation(
-                "xls", EXCEL_PROG_ID, EXCEL_DESCRIPTION,
-                System.Reflection.Assembly.GetExecutingAssembly().Location);
+                "xls", EXCEL_PROG_ID, EXCEL_DESCRIPTION, exepath);
         }
     }
 }

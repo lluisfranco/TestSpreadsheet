@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecentFilesListUserControl));
             DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
             DevExpress.XtraEditors.FormatConditionRuleValue formatConditionRuleValue1 = new DevExpress.XtraEditors.FormatConditionRuleValue();
             colExists = new DevExpress.XtraGrid.Columns.GridColumn();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            simpleButtonRemoveAssociations = new DevExpress.XtraEditors.SimpleButton();
             simpleButtonRegisterExtensions = new DevExpress.XtraEditors.SimpleButton();
             labelControlAssociatedApp = new DevExpress.XtraEditors.LabelControl();
             labelControl1 = new DevExpress.XtraEditors.LabelControl();
@@ -52,6 +54,7 @@
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
             layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
@@ -65,6 +68,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem5).BeginInit();
             SuspendLayout();
             // 
             // colExists
@@ -79,6 +83,7 @@
             // layoutControl1
             // 
             layoutControl1.AllowCustomization = false;
+            layoutControl1.Controls.Add(simpleButtonRemoveAssociations);
             layoutControl1.Controls.Add(simpleButtonRegisterExtensions);
             layoutControl1.Controls.Add(labelControlAssociatedApp);
             layoutControl1.Controls.Add(labelControl1);
@@ -91,14 +96,27 @@
             layoutControl1.TabIndex = 0;
             layoutControl1.Text = "layoutControl1";
             // 
+            // simpleButtonRemoveAssociations
+            // 
+            simpleButtonRemoveAssociations.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
+            simpleButtonRemoveAssociations.ImageOptions.ImageToTextIndent = 10;
+            simpleButtonRemoveAssociations.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("simpleButtonRemoveAssociations.ImageOptions.SvgImage");
+            simpleButtonRemoveAssociations.Location = new Point(20, 191);
+            simpleButtonRemoveAssociations.Name = "simpleButtonRemoveAssociations";
+            simpleButtonRemoveAssociations.Padding = new Padding(8);
+            simpleButtonRemoveAssociations.Size = new Size(173, 89);
+            simpleButtonRemoveAssociations.StyleController = layoutControl1;
+            simpleButtonRemoveAssociations.TabIndex = 7;
+            simpleButtonRemoveAssociations.Text = "Remove XLS and XLSX \r\nextensions asociations";
+            // 
             // simpleButtonRegisterExtensions
             // 
             simpleButtonRegisterExtensions.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
             simpleButtonRegisterExtensions.ImageOptions.ImageToTextIndent = 10;
-            simpleButtonRegisterExtensions.Location = new Point(20, 127);
+            simpleButtonRegisterExtensions.Location = new Point(20, 124);
             simpleButtonRegisterExtensions.Name = "simpleButtonRegisterExtensions";
             simpleButtonRegisterExtensions.Padding = new Padding(8);
-            simpleButtonRegisterExtensions.Size = new Size(172, 47);
+            simpleButtonRegisterExtensions.Size = new Size(173, 47);
             simpleButtonRegisterExtensions.StyleController = layoutControl1;
             simpleButtonRegisterExtensions.TabIndex = 6;
             simpleButtonRegisterExtensions.Text = "Associate XLS and XLSX \r\nextensions with Falcon Matrix";
@@ -108,10 +126,10 @@
             labelControlAssociatedApp.Appearance.Font = new Font("Tahoma", 8.25F, FontStyle.Bold);
             labelControlAssociatedApp.Appearance.Options.UseFont = true;
             labelControlAssociatedApp.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            labelControlAssociatedApp.Location = new Point(12, 82);
+            labelControlAssociatedApp.Location = new Point(12, 79);
             labelControlAssociatedApp.Name = "labelControlAssociatedApp";
             labelControlAssociatedApp.Padding = new Padding(10);
-            labelControlAssociatedApp.Size = new Size(188, 33);
+            labelControlAssociatedApp.Size = new Size(189, 33);
             labelControlAssociatedApp.StyleController = layoutControl1;
             labelControlAssociatedApp.TabIndex = 5;
             labelControlAssociatedApp.Text = "-";
@@ -119,10 +137,10 @@
             // labelControl1
             // 
             labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            labelControl1.Location = new Point(12, 45);
+            labelControl1.Location = new Point(12, 42);
             labelControl1.Name = "labelControl1";
             labelControl1.Padding = new Padding(10);
-            labelControl1.Size = new Size(188, 33);
+            labelControl1.Size = new Size(189, 33);
             labelControl1.StyleController = layoutControl1;
             labelControl1.TabIndex = 4;
             labelControl1.Text = "Excel files are associated to";
@@ -130,10 +148,10 @@
             // gridControl
             // 
             gridControl.DataSource = recentFileBindingSource;
-            gridControl.Location = new Point(204, 45);
+            gridControl.Location = new Point(205, 42);
             gridControl.MainView = gridView;
             gridControl.Name = "gridControl";
-            gridControl.Size = new Size(786, 566);
+            gridControl.Size = new Size(785, 569);
             gridControl.TabIndex = 0;
             gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
             // 
@@ -218,7 +236,7 @@
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { emptySpaceItem1, layoutControlItem1, emptySpaceItem2, emptySpaceItem3, layoutControlItem2, layoutControlItem3, layoutControlItem4 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { emptySpaceItem1, layoutControlItem1, emptySpaceItem2, emptySpaceItem3, layoutControlItem2, layoutControlItem3, layoutControlItem4, layoutControlItem5 });
             Root.Name = "Root";
             Root.Size = new Size(1002, 623);
             Root.TextVisible = false;
@@ -229,58 +247,67 @@
             emptySpaceItem1.AppearanceItemCaption.Options.UseFont = true;
             emptySpaceItem1.Location = new Point(0, 0);
             emptySpaceItem1.Name = "emptySpaceItem1";
-            emptySpaceItem1.Size = new Size(192, 33);
+            emptySpaceItem1.Size = new Size(193, 30);
             emptySpaceItem1.Text = "Excel Files";
             emptySpaceItem1.TextVisible = true;
             // 
             // layoutControlItem1
             // 
             layoutControlItem1.Control = gridControl;
-            layoutControlItem1.Location = new Point(192, 33);
+            layoutControlItem1.Location = new Point(193, 30);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new Size(790, 570);
+            layoutControlItem1.Size = new Size(789, 573);
             layoutControlItem1.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             emptySpaceItem2.AppearanceItemCaption.Font = new Font("Tahoma", 14F);
             emptySpaceItem2.AppearanceItemCaption.Options.UseFont = true;
-            emptySpaceItem2.Location = new Point(192, 0);
+            emptySpaceItem2.Location = new Point(193, 0);
             emptySpaceItem2.Name = "emptySpaceItem2";
-            emptySpaceItem2.Size = new Size(790, 33);
+            emptySpaceItem2.Size = new Size(789, 30);
             emptySpaceItem2.Text = "Recent Files";
             emptySpaceItem2.TextVisible = true;
             // 
             // emptySpaceItem3
             // 
-            emptySpaceItem3.Location = new Point(0, 174);
+            emptySpaceItem3.Location = new Point(0, 280);
             emptySpaceItem3.Name = "emptySpaceItem3";
-            emptySpaceItem3.Size = new Size(192, 429);
+            emptySpaceItem3.Size = new Size(193, 323);
             // 
             // layoutControlItem2
             // 
             layoutControlItem2.Control = labelControl1;
-            layoutControlItem2.Location = new Point(0, 33);
+            layoutControlItem2.Location = new Point(0, 30);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new Size(192, 37);
+            layoutControlItem2.Size = new Size(193, 37);
             layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             layoutControlItem3.Control = labelControlAssociatedApp;
-            layoutControlItem3.Location = new Point(0, 70);
+            layoutControlItem3.Location = new Point(0, 67);
             layoutControlItem3.Name = "layoutControlItem3";
-            layoutControlItem3.Size = new Size(192, 37);
+            layoutControlItem3.Size = new Size(193, 37);
             layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             layoutControlItem4.Control = simpleButtonRegisterExtensions;
-            layoutControlItem4.Location = new Point(0, 107);
+            layoutControlItem4.Location = new Point(0, 104);
             layoutControlItem4.Name = "layoutControlItem4";
             layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 10, 10);
-            layoutControlItem4.Size = new Size(192, 67);
+            layoutControlItem4.Size = new Size(193, 67);
             layoutControlItem4.TextVisible = false;
+            // 
+            // layoutControlItem5
+            // 
+            layoutControlItem5.Control = simpleButtonRemoveAssociations;
+            layoutControlItem5.Location = new Point(0, 171);
+            layoutControlItem5.Name = "layoutControlItem5";
+            layoutControlItem5.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 10, 10);
+            layoutControlItem5.Size = new Size(193, 109);
+            layoutControlItem5.TextVisible = false;
             // 
             // RecentFilesListUserControl
             // 
@@ -302,6 +329,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem5).EndInit();
             ResumeLayout(false);
         }
 
@@ -328,5 +356,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraEditors.SimpleButton simpleButtonRegisterExtensions;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
+        private DevExpress.XtraEditors.SimpleButton simpleButtonRemoveAssociations;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
     }
 }

@@ -21,6 +21,12 @@ namespace TestSpreadsheet
                 RegisterService.RegisterExcelAssociationToApp();
                 labelControlAssociatedApp.Text = Win32RegistryHelper.GetAssociatedProgram("xls");
             };
+            simpleButtonRemoveAssociations.Click += (s, e) =>
+            {
+                Win32RegistryHelper.RemoveAllAssociations("xls");
+                Win32RegistryHelper.RemoveAllAssociations("xlsx");
+                labelControlAssociatedApp.Text = Win32RegistryHelper.GetAssociatedProgram("xls");
+            };
         }
 
         public void Initialize()
