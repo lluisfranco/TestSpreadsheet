@@ -1,4 +1,6 @@
-﻿namespace TestSpreadsheet
+﻿using System.IO;
+
+namespace TestSpreadsheet
 {
     public class RecentFilesService(string appName)
     {
@@ -25,6 +27,30 @@
         public void SaveRecentFiles()
         {
             Win32RegisterHelper.SaveListToRegistry(AppName, RECENT_FILES_KEY, [.. RecentFiles]);
+        }
+
+    }
+
+    public class RecentFile
+    {
+        public string FilePath { get; set; }
+        public bool Exists => _FileInfo.Exists;
+        public string? FileName => Exists ? _FileInfo.Name : null;
+        public DateTime? LastModified => Exists ? _FileInfo.LastWriteTime : null;
+        public long? FileSize => Exists ? _FileInfo.Length / 1024 : null;
+        public Bitmap? Image => Exists ? GetIconFromFile(FilePath) : new(16,16);
+
+        private FileInfo _FileInfo { get; set; }
+        public RecentFile(string filePath)
+        {
+            FilePath = filePath;
+            _FileInfo = new FileInfo(filePath);
+        }
+
+        public static Bitmap? GetIconFromFile(string filePath)
+        {
+            var icon = Icon.ExtractAssociatedIcon(filePath);
+            return icon?.ToBitmap();
         }
     }
 }

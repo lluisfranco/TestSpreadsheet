@@ -4877,6 +4877,7 @@
             spreadsheetFormulaBar1.Name = "spreadsheetFormulaBar1";
             spreadsheetFormulaBar1.Padding = new Padding(4);
             spreadsheetFormulaBar1.Size = new Size(1328, 32);
+            spreadsheetFormulaBar1.SpreadsheetControl = spreadsheetControl;
             spreadsheetFormulaBar1.TabIndex = 5;
             // 
             // MainForm

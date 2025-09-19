@@ -16,7 +16,27 @@ namespace TestSpreadsheet
             ribbon.Toolbar.ItemLinks.Add(spreadsheetCommandBarButtonItem3);
             ribbon.Toolbar.ItemLinks.Add(spreadsheetCommandBarButtonItem6);
             recentFilesService.LoadRecentFiles();
-
+            var recentFilesUserControl = new RecentFilesListUserControl();
+            ribbon.ApplicationButtonDropDownControl = recentFilesUserControl;
+            ribbon.ApplicationButtonClick += (s, e) =>
+            {
+                var recentFilesList = recentFilesService.RecentFiles.Select(f => new RecentFile(f)).ToList();
+                recentFilesUserControl.SetData(recentFilesList);
+            };
+            recentFilesUserControl.ItemDoubleClick += (s, e) =>
+            {
+                var item = recentFilesUserControl.SelectedItem;
+                if (item == null || !item.Exists) return;
+                try
+                {
+                    var r = spreadsheetControl.LoadDocument(item.FilePath);
+                    ribbon.HideApplicationButtonContentControl();
+                }
+                catch (Exception ex)
+                {
+                    XtraMessageBox.Show($"Error loading file: {ex.Message}", APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
             Load += (s, e) => ThemeHelper.RestoreSavedTheme(APP_TITLE);
             Shown += (s, e) =>
             {
