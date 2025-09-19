@@ -6,11 +6,17 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>FalconAppLogoBorderTransparent_Green.ico</ApplicationIcon>
+    <ApplicationIcon>FalconAppLogoSolid_Green.ico</ApplicationIcon>
+	<FileVersion>2025.09.19.01</FileVersion>
+	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+	<AssemblyName>Falcon Matrix</AssemblyName>
+	<Company>Falcon FT</Company>
+	<AssemblyVersion>2025.09.19.01</AssemblyVersion>
+	<Version>2025.09.19.01</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="FalconAppLogoBorderTransparent_Green.ico" />
+    <Content Include="FalconAppLogoSolid_Green.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,15 +5,15 @@
         const string EXCEL_PROG_ID = "FalconMatrix.2025";
         const string EXCEL_DESCRIPTION = "Falcon Matrix Spreadsheet File";
         public static bool CheckIfExcelIsInstalled() => 
-            Win32RegisterHelper.IsExtensionRegistered("xlsx") &&
-            Win32RegisterHelper.IsExtensionRegistered("xls");
+            Win32RegistryHelper.IsExtensionRegistered("xlsx") &&
+            Win32RegistryHelper.IsExtensionRegistered("xls");
 
         public static void RegisterExcelAssociationToApp()
         {
-            Win32RegisterHelper.RegisterFileAssociation(
+            Win32RegistryHelper.RegisterFileAssociation(
                 "xlsx", EXCEL_PROG_ID, EXCEL_DESCRIPTION, 
                 System.Reflection.Assembly.GetExecutingAssembly().Location);
-            Win32RegisterHelper.RegisterFileAssociation(
+            Win32RegistryHelper.RegisterFileAssociation(
                 "xls", EXCEL_PROG_ID, EXCEL_DESCRIPTION,
                 System.Reflection.Assembly.GetExecutingAssembly().Location);
         }

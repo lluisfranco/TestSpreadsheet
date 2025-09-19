@@ -1,5 +1,7 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Dialogs.Core.View;
+using DevExpress.XtraEditors;
 using System.IO;
+using System.Reflection;
 
 namespace TestSpreadsheet
 {
@@ -11,6 +13,11 @@ namespace TestSpreadsheet
         {
             InitializeComponent();
             Text = APP_TITLE;
+            barStaticItemVersion.Caption = $"{Application.ProductVersion}";
+            MinimumSize = new Size(800, 550);
+            this.AddFormBoundsRegistryStorage();
+            Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+
             ribbon.SelectedPage = homeRibbonPage1;
             ribbon.Toolbar.ItemLinks.Add(spreadsheetCommandBarButtonItem2);
             ribbon.Toolbar.ItemLinks.Add(spreadsheetCommandBarButtonItem3);
@@ -34,7 +41,8 @@ namespace TestSpreadsheet
                 }
                 catch (Exception ex)
                 {
-                    XtraMessageBox.Show($"Error loading file: {ex.Message}", APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    XtraMessageBox.Show($"Error loading file: {ex.Message}", 
+                        APP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
             Load += (s, e) => ThemeHelper.RestoreSavedTheme(APP_TITLE);
@@ -44,7 +52,7 @@ namespace TestSpreadsheet
                 {
                     if (XtraMessageBox.Show(
                         $"""
-                        Microsoft Excel is not installed.
+                        Microsoft Excel is not installed or Excel files are not registered.
                         Would you like to register *.xls and *.xlsx files with {APP_TITLE}?
                         """,
                         APP_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
@@ -58,10 +66,12 @@ namespace TestSpreadsheet
                 var file = new FileInfo(spreadsheetControl.Document.Path);
                 Text = $"{APP_TITLE} - {file.Name}";
                 recentFilesService.SaveRecentFileFile(spreadsheetControl.Document.Path);
+                ribbon.HideApplicationButtonContentControl();
             };
             spreadsheetControl.DocumentSaved += (s, e) =>
             {
                 recentFilesService.SaveRecentFileFile(spreadsheetControl.Document.Path);
+                ribbon.HideApplicationButtonContentControl();
             };
         }
     }

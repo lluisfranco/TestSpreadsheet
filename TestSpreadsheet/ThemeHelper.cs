@@ -8,8 +8,8 @@ namespace TestSpreadsheet
     {
         public static void RestoreSavedTheme(string appname)
         {
-            var skinname = Win32RegisterHelper.ReadValueFromRegistry(appname, "Skin");
-            var skinpalettename = Win32RegisterHelper.ReadValueFromRegistry(appname, "Palette");
+            var skinname = Win32RegistryHelper.ReadValueFromRegistry(appname, "Skin");
+            var skinpalettename = Win32RegistryHelper.ReadValueFromRegistry(appname, "Palette");
             if (!string.IsNullOrWhiteSpace(skinname))
             {
                 var category = SkinCollectionHelper.GetSkinCategory(skinname);
@@ -28,8 +28,8 @@ namespace TestSpreadsheet
 
         public static void SaveCurrentTheme(string appname)
         {
-            Win32RegisterHelper.SaveValueToRegistry(appname, "Skin", WindowsFormsSettings.DefaultLookAndFeel.SkinName);
-            Win32RegisterHelper.SaveValueToRegistry(appname, "Palette", WindowsFormsSettings.DefaultLookAndFeel.ActiveSvgPaletteName);
+            Win32RegistryHelper.SaveValueToRegistry(appname, "Skin", WindowsFormsSettings.DefaultLookAndFeel.SkinName);
+            Win32RegistryHelper.SaveValueToRegistry(appname, "Palette", WindowsFormsSettings.DefaultLookAndFeel.ActiveSvgPaletteName);
         }
     }
 }

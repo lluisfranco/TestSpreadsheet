@@ -20,13 +20,13 @@ namespace TestSpreadsheet
         
         public void LoadRecentFiles()
         {
-            var files = Win32RegisterHelper.ReadListFromRegistry(AppName, RECENT_FILES_KEY);
+            var files = Win32RegistryHelper.ReadListFromRegistry(AppName, RECENT_FILES_KEY);
             if (files != null) RecentFiles = [.. files];
         }
 
         public void SaveRecentFiles()
         {
-            Win32RegisterHelper.SaveListToRegistry(AppName, RECENT_FILES_KEY, [.. RecentFiles]);
+            Win32RegistryHelper.SaveListToRegistry(AppName, RECENT_FILES_KEY, [.. RecentFiles]);
         }
 
     }

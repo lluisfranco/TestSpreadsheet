@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace TestSpreadsheet
 {
-    public class Win32RegisterHelper
+    public class Win32RegistryHelper
     {
         public static bool IsExtensionRegistered(string extension)
         {
@@ -47,6 +47,23 @@ namespace TestSpreadsheet
             [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
             public static extern void SHChangeNotify(
                 uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        }
+
+        public static int? GetIntValue(string keyname, string valueName, int? defaultvalue = null) =>
+            GetValue(keyname, valueName, defaultvalue) as int?;
+
+        public static void SaveValue(string keyname, string valueName, object value)
+        {
+            using var softwarekey = Registry.CurrentUser.OpenSubKey("Software", true);
+            using var key = softwarekey?.CreateSubKey(keyname);
+            key?.SetValue(valueName, value);
+        }
+
+        public static object? GetValue(string keyname, string valueName, object? defaultvalue = null)
+        {
+            using var softwarekey = Registry.CurrentUser.OpenSubKey("Software", true);
+            using var key = softwarekey?.OpenSubKey(keyname);
+            return key?.GetValue(valueName, defaultvalue);
         }
 
         public static void SaveValueToRegistry(string app, string keyname, string value)
