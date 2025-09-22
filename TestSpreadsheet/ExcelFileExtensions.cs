@@ -4,6 +4,7 @@ namespace TestSpreadsheet
     {
         public const string XLSX = ".xlsx";
         public const string XLS = ".xls";
-        public static readonly string[] All = new[] { XLSX, XLS };
+        public static readonly string[] All = [XLSX, XLS];
+        public static string GetAllAsString() => string.Join(" and ", All);
     }
 }

@@ -49,7 +49,7 @@ namespace TestSpreadsheet
                     if (XtraMessageBox.Show(
                         $"""
                         Microsoft Excel is not installed or Excel files are not registered.
-                        Would you like to register *.xls and *.xlsx files with {APP_TITLE}?
+                        Would you like to register {ExcelFileExtensions.GetAllAsString()} files with {APP_TITLE}?
                         """,
                         APP_TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
                     RegisterService.RegisterExcelAssociationToApp();
