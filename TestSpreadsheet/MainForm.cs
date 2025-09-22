@@ -35,6 +35,12 @@ namespace TestSpreadsheet
                 if (item == null || !item.Exists) return;
                 LoadDocument(item.FilePath);
             };
+            recentFilesUserControl.ItemOpenFolderClick += (s, e) =>
+            {
+                var item = recentFilesUserControl.SelectedItem;
+                if (item == null || !item.Exists) return;
+                Win32RegistryHelper.OpenFolderAndSelectFile(item.FilePath);
+            };
             Load += (s, e) => ThemeHelper.RestoreSavedTheme(APP_TITLE);
             Shown += (s, e) =>
             {

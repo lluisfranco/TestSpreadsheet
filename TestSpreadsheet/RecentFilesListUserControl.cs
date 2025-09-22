@@ -1,11 +1,13 @@
 ﻿using DevExpress.Utils;
 using DevExpress.XtraGrid.Views.Grid;
+using System.IO;
 
 namespace TestSpreadsheet
 {
     public partial class RecentFilesListUserControl : DevExpress.XtraEditors.XtraUserControl
     {
         public event EventHandler? ItemDoubleClick;
+        public event EventHandler? ItemOpenFolderClick;
         public RecentFile? SelectedItem => gridView.GetFocusedRow() as RecentFile;
         public RecentFilesListUserControl()
         {
@@ -18,22 +20,60 @@ namespace TestSpreadsheet
             gridView.DoubleClick += (s, e) => ItemDoubleClick?.Invoke(this, EventArgs.Empty);
             simpleButtonRegisterExtensions.Click += (s, e) =>
             {
+                Cursor = Cursors.WaitCursor;
                 RegisterService.RegisterExcelAssociationToApp();
-                labelControlAssociatedApp.Text = Win32RegistryHelper.GetAssociatedProgram("xls");
+                RefreshFileAssociationPrograms();
+                RefreshFileAssociationIcons();
+                Cursor = Cursors.Default;
             };
             simpleButtonRemoveAssociations.Click += (s, e) =>
             {
-                Win32RegistryHelper.RemoveAllAssociations("xls");
-                Win32RegistryHelper.RemoveAllAssociations("xlsx");
-                labelControlAssociatedApp.Text = Win32RegistryHelper.GetAssociatedProgram("xls");
+                Cursor = Cursors.WaitCursor;
+                RemoveFileAssociations();
+                RefreshFileAssociationPrograms();
+                RefreshFileAssociationIcons();
+                Cursor = Cursors.Default;
+            };
+            repositoryItemButtonEditActions.ButtonClick += (s, e) =>
+            {
+                if (e.Button.ToolTip == "Open folder") ItemOpenFolderClick?.Invoke(this, EventArgs.Empty);
             };
         }
 
         public void Initialize()
         {
             simpleButtonRegisterExtensions.ImageOptions.Image = (FindForm() as MainForm)?.IconOptions.Icon.ToBitmap();
-            labelControlAssociatedApp.Text = Win32RegistryHelper.GetAssociatedProgram("xls");
+            RefreshFileAssociationPrograms();
+            RefreshFileAssociationIcons();
+        }
 
+        private void RefreshFileAssociationPrograms()
+        {
+            labelControlAssociatedAppXLS.Text = 
+                $"{ExcelFileExtensions.XLS} -> {Win32RegistryHelper.GetAssociatedProgram(ExcelFileExtensions.XLS)}";
+            labelControlAssociatedAppXLSX.Text = 
+                $"{ExcelFileExtensions.XLSX} -> {Win32RegistryHelper.GetAssociatedProgram(ExcelFileExtensions.XLSX)}";
+        }
+
+        private void RefreshFileAssociationIcons()
+        {
+            var temppathxls = Path.GetTempFileName();
+            var tempxls = temppathxls.Replace("tmp", ExcelFileExtensions.XLS);
+            File.Create(tempxls);
+            var iconxls = RecentFile.GetIconFromFile(tempxls);
+            labelControlAssociatedAppXLS.ImageOptions.Image = iconxls;
+
+            var temppathxlsx = Path.GetTempFileName();
+            var tempxlsx = temppathxlsx.Replace("tmp", ExcelFileExtensions.XLSX);
+            File.Create(tempxlsx);
+            var iconxlsx = RecentFile.GetIconFromFile(tempxlsx);
+            labelControlAssociatedAppXLSX.ImageOptions.Image = iconxlsx;
+        }
+
+        private static void RemoveFileAssociations()
+        {
+            Win32RegistryHelper.RemoveAllAssociations(ExcelFileExtensions.XLS);
+            Win32RegistryHelper.RemoveAllAssociations(ExcelFileExtensions.XLSX);
         }
 
         public void SetData(IList<RecentFile> recentFiles) => gridControl.DataSource = recentFiles;

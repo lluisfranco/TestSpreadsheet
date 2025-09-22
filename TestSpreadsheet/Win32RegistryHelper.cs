@@ -23,36 +23,8 @@ namespace TestSpreadsheet
             return key.GetValue("") as string;
         }
 
-        //public static void RegisterFileAssociation(
-        //    string extension, string progId, string description, string applicationPath)
-        //{
-        //    using (var root = Registry.CurrentUser.CreateSubKey(@"Software\Classes"))
-        //    {
-        //        using (var extKey = root.CreateSubKey(extension))
-        //        {
-        //            extKey.SetValue("", progId);
-        //        }
-        //        using var progIdKey = root.CreateSubKey(progId);
-        //        progIdKey.SetValue("", description);
-        //        using (var iconKey = progIdKey.CreateSubKey("DefaultIcon"))
-        //        {
-        //            iconKey.SetValue("", $"\"{applicationPath}\",0");
-        //        }
-        //        using var shellKey = progIdKey.CreateSubKey(@"shell\open\command");
-        //        shellKey.SetValue("", $"\"{applicationPath}\" \"%1\"");
-        //    }
-        //    NativeMethods.SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
-        //}
-
-        //private static class NativeMethods
-        //{
-        //    [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        //    public static extern void SHChangeNotify(
-        //        uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
-        //}
-
         public static void RegisterFileAssociation(
-    string extension, string progId, string description, string applicationPath)
+            string extension, string progId, string description, string applicationPath)
         {
             // 1) Normalize inputs
             if (string.IsNullOrWhiteSpace(extension)) throw new ArgumentNullException(nameof(extension));
@@ -226,6 +198,14 @@ namespace TestSpreadsheet
             if (key != null)
                 return (string[])key.GetValue(listname, Array.Empty<string>());
             return default;
+        }
+
+        public static void OpenFolderAndSelectFile(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath)) return;
+            if (!File.Exists(filePath)) return;
+            string argument = $"/select, \"{filePath}\"";
+            System.Diagnostics.Process.Start("explorer.exe", argument);
         }
     }
 }
