@@ -14,8 +14,6 @@ namespace TestSpreadsheet
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            // Pre-load all assemblies related to SpreadsheetControl in advance
-            using (var sc = new SpreadsheetControl()) { }
             var mainform = new MainForm();
             if (args.Length > 0 && File.Exists(args[0]))
                 mainform.OpenFileOnStart = args[0];            

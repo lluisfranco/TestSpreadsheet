@@ -62,12 +62,12 @@ namespace TestSpreadsheet
                 spreadsheetControl.Document.CalculateFull();
                 var file = new FileInfo(spreadsheetControl.Document.Path);
                 Text = $"{APP_TITLE} - {file.Name}";
-                recentFilesService.SaveRecentFileFile(spreadsheetControl.Document.Path);
+                recentFilesService.SaveRecentFile(spreadsheetControl.Document.Path);
                 ribbon.HideApplicationButtonContentControl();
             };
             spreadsheetControl.DocumentSaved += (s, e) =>
             {
-                recentFilesService.SaveRecentFileFile(spreadsheetControl.Document.Path);
+                recentFilesService.SaveRecentFile(spreadsheetControl.Document.Path);
                 ribbon.HideApplicationButtonContentControl();
             };
         }

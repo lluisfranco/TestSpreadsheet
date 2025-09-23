@@ -9,7 +9,7 @@ namespace TestSpreadsheet
         public string AppName { get; set; } = appName;
         public IList<string> RecentFiles { get; private set; } = [];
 
-        public void SaveRecentFileFile(string filepath)
+        public void SaveRecentFile(string filepath)
         {
             if (string.IsNullOrWhiteSpace(filepath)) return;
             RecentFiles.Remove(filepath);
