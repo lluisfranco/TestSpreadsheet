@@ -15,7 +15,7 @@ namespace TestSpreadsheet
             ApplicationConfiguration.Initialize();
             var mainform = new MainForm();
             if (args.Length > 0 && File.Exists(args[0]))
-                mainform.OpenFileOnStart = args[0];
+                mainform.OpenFileOnStart = args[0];            
             Application.Run(mainform);
         }
     }
